@@ -1,193 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AI SmartCane Assist — an accessible navigation concept for people with visual impairments.">
-  <title>AI SmartCane Assist | Move with confidence</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101827" />
+  <title>AI SmartCane Assist</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="AI SmartCane Assist home">
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="AI SmartCane Assist home">
       <span class="brand-mark" aria-hidden="true">✦</span>
-      <span>SmartCane <b>Assist</b></span>
+      <span>SmartCane <b>Assist</b><small>Accessible mobility companion</small></span>
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="siteNav">Menu</button>
-    <nav id="siteNav" aria-label="Main navigation">
-      <a href="#features">Features</a>
-      <a href="#how-it-works">How it works</a>
-      <a href="#demo">Try demo</a>
-      <a href="#about">About project</a>
-    </nav>
-    <a class="header-cta" href="#demo">Explore demo <span aria-hidden="true">↗</span></a>
+    <div class="top-actions">
+      <span class="status-dot" aria-hidden="true"></span><span id="systemStatus">Browser demo ready</span>
+      <button class="icon-button" id="speakWelcome" type="button" aria-label="Speak page introduction">🔊</button>
+    </div>
   </header>
 
-  <main id="main">
-    <section class="hero section-wrap" id="home">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="status-dot"></span> AI-POWERED ASSISTIVE TECHNOLOGY</p>
-        <h1>Move through the world with <span>more confidence.</span></h1>
-        <p class="hero-lead">A smartphone-based assistive system concept designed to help people with visual impairments understand nearby obstacles, navigate outdoors, and reach caregivers in an emergency.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#demo">Try the interactive demo <span aria-hidden="true">→</span></a>
-          <a class="button button-quiet" href="#how-it-works">See how it works</a>
-        </div>
-        <div class="hero-note"><span class="note-icon" aria-hidden="true">◉</span><p>Designed around clear audio cues, accessible controls, and a simpler experience.</p></div>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <p class="nav-label">WORKSPACE</p>
+      <button class="nav-item active" data-page="dashboard" aria-current="page"><span>▦</span> Dashboard</button>
+      <button class="nav-item" data-page="detect"><span>◎</span> Obstacle detection</button>
+      <button class="nav-item" data-page="navigate"><span>➤</span> Navigation</button>
+      <button class="nav-item" data-page="caregivers"><span>♧</span> Caregivers</button>
+      <button class="nav-item" data-page="settings"><span>⚙</span> Accessibility settings</button>
+      <div class="sidebar-note">
+        <span class="note-icon">♥</span>
+        <strong>Your safety matters</strong>
+        <p>This browser demo is an assistive prototype. Always use your usual mobility aid.</p>
       </div>
-      <div class="hero-visual" aria-label="Illustration of a phone displaying an assistive navigation interface">
-        <div class="visual-glow"></div>
-        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <div class="phone">
-          <div class="phone-top"><span>9:41</span><span aria-hidden="true">● ● ▰</span></div>
-          <div class="phone-content">
-            <div class="mini-brand"><span>✦</span> SmartCane</div>
-            <p class="small-muted">YOUR SURROUNDINGS</p>
-            <div class="scan-card">
-              <div class="scan-sun"></div><div class="scan-road"></div>
-              <div class="scan-object"></div><div class="scan-frame"></div>
-              <span class="scan-label">Object detected</span>
+    </aside>
+
+    <main id="main" class="main-content" tabindex="-1">
+      <section class="page active" id="page-dashboard" aria-labelledby="welcomeTitle">
+        <div class="welcome-row">
+          <div>
+            <p class="eyebrow">AI-POWERED MOBILITY SUPPORT</p>
+            <h1 id="welcomeTitle">Your journey, <span>with more confidence.</span></h1>
+            <p class="subheading">A simple place to explore obstacle awareness, spoken guidance and emergency support.</p>
+          </div>
+          <div class="date-chip" id="todayDate">Today</div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-copy">
+            <span class="pill"><span class="pulse"></span> SMARTCANE OVERVIEW</span>
+            <h2>Move with awareness.<br/>Stay connected.</h2>
+            <p>Explore the tools designed to help identify objects, plan routes and contact trusted people.</p>
+            <button class="primary-button" data-goto="detect">Open obstacle detection <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="phone-art"><div class="phone-speaker"></div><div class="phone-screen"><span class="scan-line"></span><span class="scan-box box-one"></span><span class="scan-box box-two"></span><span class="scan-box box-three"></span><span class="phone-caption">SCANNING AREA</span></div></div>
+            <span class="floating-tag tag-ai">✦ AI assist</span><span class="floating-tag tag-voice">♫ Voice cues</span><span class="floating-tag tag-safe">＋ SOS support</span>
+          </div>
+        </div>
+
+        <div class="section-heading"><div><h2>Quick access</h2><p>Choose a feature to get started.</p></div></div>
+        <div class="feature-grid">
+          <button class="feature-card" data-goto="detect"><span class="feature-icon blue">◎</span><span class="feature-title">Obstacle detection</span><span class="feature-desc">Use your camera to test supported object recognition.</span><span class="feature-link">Open feature →</span></button>
+          <button class="feature-card" data-goto="navigate"><span class="feature-icon green">➤</span><span class="feature-title">Voice navigation</span><span class="feature-desc">Enter a destination and open route directions.</span><span class="feature-link">Plan a route →</span></button>
+          <button class="feature-card" data-goto="caregivers"><span class="feature-icon purple">♧</span><span class="feature-title">Caregiver contacts</span><span class="feature-desc">Manage the trusted contacts saved in this browser.</span><span class="feature-link">Manage contacts →</span></button>
+          <button class="feature-card" data-goto="settings"><span class="feature-icon amber">⚙</span><span class="feature-title">Accessibility</span><span class="feature-desc">Adjust speech, text size and contrast preferences.</span><span class="feature-link">Adjust settings →</span></button>
+        </div>
+
+        <div class="bottom-grid">
+          <div class="panel">
+            <div class="panel-heading"><div><h2>System checklist</h2><p>Browser capabilities available to this demo.</p></div><span class="status-tag">LIVE</span></div>
+            <ul class="check-list">
+              <li><span class="check-symbol">✓</span><span><b>Speech output</b><small id="speechSupport">Checking browser support…</small></span></li>
+              <li><span class="check-symbol">✓</span><span><b>Local caregiver storage</b><small>Saved on this browser/device</small></span></li>
+              <li><span class="check-symbol">✓</span><span><b>Map directions</b><small>Opens Google Maps in a new tab</small></span></li>
+            </ul>
+          </div>
+          <div class="panel safety-panel"><div class="safety-symbol">!</div><div><h2>Safety reminder</h2><p>Object recognition may miss hazards or misidentify objects. Do not rely on this website as your only mobility aid. Test only in a safe, stationary environment.</p></div></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-detect" aria-labelledby="detectTitle" hidden>
+        <div class="page-heading"><p class="eyebrow">CAMERA + OBJECT AWARENESS</p><h1 id="detectTitle">Obstacle detection</h1><p class="subheading">Allow camera access, then start a demo scan. The optional browser model detects common COCO classes; stairs and poles are not reliably supported by that model.</p></div>
+        <div class="detect-layout">
+          <div class="panel camera-panel">
+            <div class="panel-heading"><div><h2>Live camera</h2><p>Keep the device stationary during testing.</p></div><span class="live-badge" id="cameraStatus">Camera off</span></div>
+            <div class="camera-stage">
+              <video id="cameraVideo" playsinline muted aria-label="Live camera preview"></video>
+              <canvas id="detectionCanvas" aria-label="Object detection boxes"></canvas>
+              <div class="camera-placeholder" id="cameraPlaceholder"><div class="camera-placeholder-icon">◎</div><b>Camera preview</b><span>Start the camera to begin a demo scan.</span></div>
             </div>
-            <div class="phone-alert"><span class="alert-symbol">!</span><div><b>Person ahead</b><small>Awareness alert</small></div><span class="pulse"></span></div>
-            <div class="phone-controls"><span>◖</span><span class="voice-circle">♫</span><span>⌖</span></div>
+            <div class="button-row">
+              <button class="primary-button" id="startCamera">Start camera</button>
+              <button class="secondary-button" id="stopCamera" disabled>Stop camera</button>
+              <button class="secondary-button" id="scanDemo">Demo alert</button>
+            </div>
+            <p class="small-note">Camera access requires HTTPS or localhost and your permission. The object model loads from a CDN, so model-based detection needs an internet connection.</p>
+          </div>
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Detection results</h2><p>Latest recognised objects</p></div><span class="count-badge" id="detectionCount">0</span></div>
+            <div id="detectionResults" class="results-list" aria-live="polite"><div class="empty-state">No detections yet. Start the camera or try a demo alert.</div></div>
+            <div class="feedback-box"><div class="feedback-icon">♫</div><div><b>Spoken feedback</b><p id="feedbackText" aria-live="polite">Waiting for an object to be detected.</p><button class="text-button" id="repeatFeedback">Repeat last alert</button></div></div>
+            <div class="alert-legend"><span><i class="legend-dot danger"></i>Danger</span><span><i class="legend-dot caution"></i>Caution</span><span><i class="legend-dot awareness"></i>Awareness</span></div>
           </div>
         </div>
-        <div class="float-card float-top"><span class="float-icon">⌁</span><div><b>Voice guidance</b><small>Clear spoken cues</small></div></div>
-        <div class="float-card float-bottom"><span class="float-icon safe">✓</span><div><b>Emergency support</b><small>Caregiver alert concept</small></div></div>
-        <div class="hero-caption">A connected assistive experience</div>
-      </div>
-    </section>
+      </section>
 
-    <section class="trust-strip" aria-label="Project capabilities">
-      <div><span class="strip-icon">◎</span><span><b>Object awareness</b><small>Recognise common obstacles</small></span></div>
-      <div><span class="strip-icon">♫</span><span><b>Audio feedback</b><small>Short spoken cues</small></span></div>
-      <div><span class="strip-icon">⌖</span><span><b>Outdoor navigation</b><small>Voice-led route concept</small></span></div>
-      <div><span class="strip-icon">＋</span><span><b>SOS support</b><small>Caregiver alert concept</small></span></div>
-    </section>
-
-    <section class="section section-wrap" id="features">
-      <div class="section-heading">
-        <p class="eyebrow">BUILT FOR INDEPENDENCE</p>
-        <h2>One companion. <span>Four helpful tools.</span></h2>
-        <p>AI SmartCane Assist brings key assistive ideas together in one accessible experience.</p>
-      </div>
-      <div class="feature-grid">
-        <article class="feature-card feature-dark">
-          <div class="feature-icon">◎</div><span class="card-number">01 / AWARENESS</span>
-          <h3>AI obstacle recognition</h3>
-          <p>Designed to identify common objects such as vehicles, poles, staircases, and pedestrians from a phone camera view.</p>
-          <span class="card-link">Object type + estimated proximity <span aria-hidden="true">↗</span></span>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon lavender">♫</div><span class="card-number">02 / FEEDBACK</span>
-          <h3>Audio & vibration cues</h3>
-          <p>Short speech cues and different vibration patterns can communicate whether an object is far away, nearby, or very close.</p>
-          <span class="card-link">Clear, graded alerts <span aria-hidden="true">↗</span></span>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon mint">⌖</div><span class="card-number">03 / NAVIGATION</span>
-          <h3>Voice-guided directions</h3>
-          <p>The proposed mobile app can use GPS and a mapping service to provide spoken outdoor turn-by-turn directions.</p>
-          <span class="card-link">Hands-free guidance concept <span aria-hidden="true">↗</span></span>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon peach">＋</div><span class="card-number">04 / EMERGENCY</span>
-          <h3>Caregiver SOS alert</h3>
-          <p>A deliberate SOS action is intended to share the user's location and an alert message with registered caregivers.</p>
-          <span class="card-link">Emergency workflow concept <span aria-hidden="true">↗</span></span>
-        </article>
-      </div>
-    </section>
-
-    <section class="how-section" id="how-it-works">
-      <div class="section-wrap how-layout">
-        <div class="how-copy">
-          <p class="eyebrow">SIMPLE BY DESIGN</p>
-          <h2>From camera input to a clearer <span>next step.</span></h2>
-          <p>The proposed system combines on-device AI with spoken feedback, navigation, and emergency support. This website is a front-end demonstration of the project concept.</p>
-          <a class="button button-light" href="#demo">Try the demo <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="steps">
-          <div class="step"><span class="step-num">01</span><div><h3>Capture</h3><p>The smartphone camera provides a view of the path ahead.</p></div><span class="step-symbol">▣</span></div>
-          <div class="step"><span class="step-num">02</span><div><h3>Recognise</h3><p>An integrated TensorFlow Lite model is intended to identify supported object classes.</p></div><span class="step-symbol">✳</span></div>
-          <div class="step"><span class="step-num">03</span><div><h3>Inform</h3><p>Speech and vibration patterns communicate the type and estimated proximity of an obstacle.</p></div><span class="step-symbol">♫</span></div>
-          <div class="step"><span class="step-num">04</span><div><h3>Support</h3><p>Navigation and SOS features are designed to help users stay oriented and contact caregivers.</p></div><span class="step-symbol">⌖</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-wrap demo-section" id="demo">
-      <div class="section-heading">
-        <p class="eyebrow">INTERACTIVE PREVIEW</p>
-        <h2>Explore the <span>assistive experience.</span></h2>
-        <p>Use these sample controls to demonstrate the website during your project presentation.</p>
-      </div>
-      <div class="demo-grid">
-        <article class="demo-card">
-          <div class="demo-card-top"><span class="demo-icon">♫</span><span class="demo-tag">VOICE DEMO</span></div>
-          <h3>Hear a sample alert</h3>
-          <p>Choose an example obstacle to hear a spoken cue, if your browser supports speech synthesis.</p>
-          <label for="obstacleSelect">Sample obstacle</label>
-          <select id="obstacleSelect">
-            <option value="Vehicle ahead. Please take care.">Vehicle</option>
-            <option value="Stairs ahead. Please proceed carefully.">Staircase</option>
-            <option value="Pole ahead. Please take care.">Pole</option>
-            <option value="Person ahead. Please take care.">Pedestrian</option>
-            <option value="Ground hazard ahead. Please proceed carefully.">Ground hazard</option>
-          </select>
-          <button class="button button-primary full-button" id="speakButton">▶ Play spoken cue</button>
-          <p class="demo-feedback" id="speechStatus" role="status" aria-live="polite">Ready to play a sample cue.</p>
-        </article>
-        <article class="demo-card">
-          <div class="demo-card-top"><span class="demo-icon mint">⌖</span><span class="demo-tag">NAVIGATION DEMO</span></div>
-          <h3>Plan a sample route</h3>
-          <p>Enter a destination to open a Google Maps search in a new tab. This is not turn-by-turn guidance.</p>
-          <label for="destinationInput">Destination</label>
-          <input id="destinationInput" type="text" placeholder="e.g. Gateway of India" autocomplete="street-address">
-          <button class="button button-primary full-button" id="routeButton">Open map search <span aria-hidden="true">↗</span></button>
-          <p class="demo-feedback" id="routeStatus" role="status" aria-live="polite">Your destination stays in this browser until you open Maps.</p>
-        </article>
-        <article class="demo-card sos-card">
-          <div class="demo-card-top"><span class="demo-icon peach">＋</span><span class="demo-tag">SOS PREVIEW</span></div>
-          <h3>Preview an SOS message</h3>
-          <p>See an example of the caregiver message. This preview does not send a real alert or share your location.</p>
-          <button class="button button-danger full-button" id="sosButton">Preview SOS message</button>
-          <div class="sos-preview" id="sosPreview" hidden role="status" aria-live="polite">
-            <b>Example caregiver alert</b>
-            <p>I may need assistance. Please contact me. My location can be shared through the actual mobile app when configured.</p>
+      <section class="page" id="page-navigate" aria-labelledby="navigateTitle" hidden>
+        <div class="page-heading"><p class="eyebrow">OUTDOOR ROUTE SUPPORT</p><h1 id="navigateTitle">Voice-guided navigation</h1><p class="subheading">Enter a destination or use voice input where supported. Route planning opens Google Maps; turn-by-turn audio in this demo is provided by the map service.</p></div>
+        <div class="navigation-grid">
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Plan your journey</h2><p>Choose where you want to go.</p></div><span class="feature-icon green">➤</span></div>
+            <form id="routeForm">
+              <label for="destination">Destination</label>
+              <div class="destination-input"><input id="destination" name="destination" required placeholder="e.g. nearest railway station" autocomplete="street-address"/><button type="button" id="voiceDestination" class="mic-button" aria-label="Speak destination">🎙</button></div>
+              <p id="voiceStatus" class="small-note" aria-live="polite">Voice input depends on browser support and microphone permission.</p>
+              <label for="travelMode">Travel mode</label>
+              <select id="travelMode"><option value="walking">Walking</option><option value="transit">Public transport</option><option value="driving">Driving</option></select>
+              <button class="primary-button full-width" type="submit">Open route in Google Maps →</button>
+            </form>
+            <div class="route-tip"><b>Accessibility tip</b><p>Connect earphones if needed, keep ambient sounds audible, and confirm the route before moving.</p></div>
           </div>
-        </article>
-      </div>
-      <p class="safety-note"><strong>Important:</strong> This is a student project website and interactive prototype. It does not perform live AI object detection, send SOS messages, or replace a white cane, mobility training, or professional assistance. Do not rely on this demo for real-world safety.</p>
-    </section>
-
-    <section class="about-section" id="about">
-      <div class="section-wrap about-layout">
-        <div>
-          <p class="eyebrow">ABOUT THE PROJECT</p>
-          <h2>Technology with a <span>human purpose.</span></h2>
+          <div class="panel route-preview">
+            <div class="map-placeholder"><div class="map-lines"></div><span class="map-pin pin-a">●</span><span class="map-pin pin-b">●</span><div class="map-label">MAP ROUTE PREVIEW</div></div>
+            <h2>Route assistance</h2><p>Google Maps will provide the current route information in a separate tab. This website does not continuously track your movement or recalculate routes itself.</p>
+            <button class="secondary-button" id="speakNavigationTip">🔊 Hear navigation tip</button>
+          </div>
         </div>
-        <div class="about-copy">
-          <p><strong>AI SmartCane Assist — An AI-Powered Smart Navigation System for the Visually Impaired</strong> is a software project concept focused on accessible mobility.</p>
-          <p>The project report proposes a React Native mobile application, an on-device TensorFlow Lite object-detection model, Google Maps-based outdoor navigation, spoken feedback, vibration alerts, caregiver management, and emergency SOS support.</p>
-          <div class="tech-list"><span>React Native</span><span>TensorFlow Lite</span><span>Google Maps API</span><span>HTML · CSS · JavaScript</span></div>
+      </section>
+
+      <section class="page" id="page-caregivers" aria-labelledby="caregiverTitle" hidden>
+        <div class="page-heading"><p class="eyebrow">TRUSTED CONTACTS</p><h1 id="caregiverTitle">Caregiver contacts</h1><p class="subheading">Add people you trust. Contacts are stored locally in this browser and are not uploaded to a server.</p></div>
+        <div class="contacts-layout">
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Add a caregiver</h2><p>Enter a contact for emergency messaging.</p></div></div>
+            <form id="caregiverForm">
+              <label for="caregiverName">Full name</label><input id="caregiverName" required maxlength="80" placeholder="Caregiver name"/>
+              <label for="caregiverRelation">Relationship</label><input id="caregiverRelation" maxlength="60" placeholder="e.g. Family member"/>
+              <label for="caregiverPhone">Phone number</label><input id="caregiverPhone" required type="tel" maxlength="20" placeholder="+91 98765 43210"/>
+              <button class="primary-button full-width" type="submit">＋ Save caregiver</button>
+            </form>
+          </div>
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Saved caregivers</h2><p id="caregiverCount">0 trusted contacts</p></div><span class="feature-icon purple">♧</span></div>
+            <div id="caregiverList" class="caregiver-list"><div class="empty-state">No contacts added yet.</div></div>
+            <div class="sos-card"><div><span class="sos-kicker">EMERGENCY SUPPORT</span><h2>Need help?</h2><p>Prepare an SOS message with your location and choose a saved caregiver.</p></div><button class="sos-button" id="openSOS">SOS alert</button></div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="closing section-wrap">
-      <div class="closing-mark" aria-hidden="true">✦</div>
-      <div><h2>More awareness. More confidence.</h2><p>Exploring how accessible technology can support independent mobility.</p></div>
-      <a class="button button-primary" href="#home">Back to top ↑</a>
-    </section>
-  </main>
+      <section class="page" id="page-settings" aria-labelledby="settingsTitle" hidden>
+        <div class="page-heading"><p class="eyebrow">PERSONALISE YOUR EXPERIENCE</p><h1 id="settingsTitle">Accessibility settings</h1><p class="subheading">Adjust how information is displayed and spoken in this browser.</p></div>
+        <div class="panel settings-panel">
+          <div class="setting-row"><div><h2>Spoken announcements</h2><p>Read feedback aloud using your browser's speech engine.</p></div><label class="switch"><input id="speechEnabled" type="checkbox" checked/><span></span><b class="sr-only">Enable spoken announcements</b></label></div>
+          <div class="setting-row"><div><h2>Speech rate</h2><p>Choose how quickly spoken alerts are delivered.</p></div><div class="range-control"><input id="speechRate" type="range" min="0.6" max="1.5" step="0.1" value="1"/><output id="speechRateValue">1.0×</output></div></div>
+          <div class="setting-row"><div><h2>Vibration intensity</h2><p>Uses the browser/device vibration API where supported.</p></div><div class="range-control"><input id="vibrationIntensity" type="range" min="1" max="3" step="1" value="2"/><output id="vibrationValue">Medium</output></div></div>
+          <div class="setting-row"><div><h2>Larger text</h2><p>Increase text size across the website.</p></div><label class="switch"><input id="largeText" type="checkbox"/><span></span><b class="sr-only">Enable larger text</b></label></div>
+          <div class="setting-row"><div><h2>High contrast</h2><p>Use stronger contrast for easier reading.</p></div><label class="switch"><input id="highContrast" type="checkbox"/><span></span><b class="sr-only">Enable high contrast</b></label></div>
+          <div class="setting-actions"><button class="primary-button" id="saveSettings">Save settings</button><button class="secondary-button" id="testSpeech">Test spoken alert</button></div>
+          <p id="settingsStatus" class="small-note" aria-live="polite">Settings are saved locally in this browser.</p>
+        </div>
+      </section>
 
-  <footer class="site-footer">
-    <a class="brand footer-brand" href="#home"><span class="brand-mark">✦</span><span>SmartCane <b>Assist</b></span></a>
-    <p>Student project prototype · Built for demonstration and learning</p>
-    <a href="#main">Accessibility-first design</a>
-  </footer>
+      <footer class="footer"><span>AI SmartCane Assist</span><span>Accessible by design · Browser prototype</span><button id="footerHelp" class="text-button">Read safety reminder</button></footer>
+    </main>
+  </div>
+
+  <dialog id="sosDialog" aria-labelledby="sosDialogTitle">
+    <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Close dialog">×</button></form>
+    <div class="dialog-icon">!</div><h2 id="sosDialogTitle">Prepare an SOS alert</h2>
+    <p>This prepares a message for you to review. It does not silently send an alert.</p>
+    <label for="sosContact">Send message to</label><select id="sosContact"></select>
+    <div class="location-status" id="locationStatus">Location has not been requested.</div>
+    <button class="primary-button full-width" id="getLocation" type="button">Get current location</button>
+    <label for="sosMessage">Message preview</label><textarea id="sosMessage" rows="4">I may need assistance. Please contact me.</textarea>
+    <button class="sos-button full-width" id="sendSOS" type="button">Open messaging app</button>
+    <p class="small-note">Review the recipient and message before sending. Emergency message delivery depends on your device, messaging app and network.</p>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
