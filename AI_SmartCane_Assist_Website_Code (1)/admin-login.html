@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | AI SmartCane Assist</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f4f7f6;
+      color: #183b32;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 32px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .brand h1 {
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
+
+    .brand p {
+      margin: 0;
+      color: #64756f;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin: 17px 0 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd8d3;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    input:focus {
+      outline: 2px solid #8ac7b0;
+      border-color: #26765c;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 8px;
+      background: #216b53;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .forgot {
+      display: block;
+      margin-top: 16px;
+      text-align: center;
+      color: #216b53;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back {
+      display: block;
+      margin-top: 22px;
+      text-align: center;
+      color: #64756f;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    #message {
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    #message:empty {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="login-card">
+    <div class="brand">
+      <h1>SmartCane Assist</h1>
+      <p>Administrator Login</p>
+    </div>
+
+    <form id="loginForm">
+      <label for="email">Admin Email</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="Enter your admin email"
+        autocomplete="username"
+        required
+      >
+
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button id="loginButton" type="submit">
+        Login
+      </button>
+    </form>
+
+    <a class="forgot" href="#" id="forgotLink">
+      Forgot Password?
+    </a>
+
+    <p id="message" role="status" aria-live="polite"></p>
+
+    <a class="back" href="index.html">
+      ← Back to website
+    </a>
+  </main>
+
+  <script type="module">
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    // Replace these example values with your Firebase web config.
+    // Copy the actual values from your existing script-backup.js.
+    const firebaseConfig = {
+  apiKey: "AIzaSyAEUCaub0CFvBxaYacG8jl3B0o07DCt7jo",
+  authDomain: "smartcane-assist.firebaseapp.com",
+  projectId: "smartcane-assist",
+  storageBucket: "smartcane-assist.firebasestorage.app",
+  messagingSenderId: "44343006756",
+  appId: "1:44343006756:web:83823387dfed06c5d8aab1",
+  measurementId: "G-5YDWTS45GP"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const message = document.getElementById("message");
+    const loginButton = document.getElementById("loginButton");
+    const forgotLink = document.getElementById("forgotLink");
+
+    function showMessage(text, success = false) {
+      message.textContent = text;
+      message.style.color = success ? "#216b53" : "#b42318";
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      loginButton.disabled = true;
+      showMessage("Signing in...");
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+
+      window.location.href= "https://aditimestry72-stack.github.io/smart-cane/"; 
+      } catch (error) {
+        if (
+          error.code === "auth/invalid-credential" ||
+          error.code === "auth/invalid-login-credentials"
+        ) {
+          showMessage("Email or password is incorrect.");
+        } else if (error.code === "auth/too-many-requests") {
+          showMessage("Too many attempts. Please try again later.");
+        } else {
+          showMessage("Unable to log in. Check your Firebase configuration and try again.");
+          console.error(error);
+        }
+      } finally {
+        loginButton.disabled = false;
+      }
+    });
+
+    forgotLink.addEventListener("click", async (event) => {
+      event.preventDefault();
+
+      const email = emailInput.value.trim();
+
+      if (!email) {
+        showMessage("Enter your registered admin email above first.");
+        emailInput.focus();
+        return;
+      }
+
+      forgotLink.style.pointerEvents = "none";
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+
+        showMessage(
+          "If this email belongs to an account, a password-reset email will be sent. Check your inbox and spam folder.",
+          true
+        );
+      } catch (error) {
+        if (error.code === "auth/invalid-email") {
+          showMessage("Please enter a valid email address.");
+        } else {
+          showMessage(
+            "Unable to request a reset email. Check your Firebase settings and try again."
+          );
+          console.error(error);
+        }
+      } finally {
+        forgotLink.style.pointerEvents = "auto";
+      }
+    });
+  </script>
+</body>
+</html>
